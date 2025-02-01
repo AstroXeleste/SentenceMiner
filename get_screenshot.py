@@ -34,19 +34,19 @@ def capture_screenshot(video_path, timestamp, screenshot_path='screenshot.png'):
     # Release the video capture object
     cap.release()
 
-def main():
-    video_url = input("Enter YouTube video URL: ")
-    timestamp = float(input("Enter timestamp in seconds: "))  # Accept timestamp as a float representing seconds
+# def main():
+#     video_url = input("Enter YouTube video URL: ")
+#     timestamp = float(input("Enter timestamp in seconds: "))  # Accept timestamp as a float representing seconds
 
-    # Download the video
-    download_video(video_url)
+#     # Download the video
+#     download_video(video_url)
 
-    # Capture screenshot at the specified timestamp
-    capture_screenshot('video.mp4', timestamp)
+#     # Capture screenshot at the specified timestamp
+#     capture_screenshot('video.mp4', timestamp)
 
-    # Optionally clean up by removing the downloaded video file
-    os.remove('video.mp4')
+#     # Optionally clean up by removing the downloaded video file
+#     os.remove('video.mp4')
     
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

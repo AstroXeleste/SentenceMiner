@@ -46,6 +46,9 @@ def get_subtitles_text(video_url, start_time, end_time, language='en'):
     except Exception as e:
         print(f"An error occurred: {e}")
         return ""
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return ""
 
 
 # if __name__ == "__main__":

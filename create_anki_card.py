@@ -1,7 +1,7 @@
 import genanki
 import os
 
-def create_anki_card(german_phrase, english_translation, audio_file, image_file, deck_name="German Phrases Deck", deck_filename='german_english_deck.apkg'):
+def create_anki_card(german_phrase, english_translation, audio_file, image_file, deck_name="Sentences Mined from Immersion Material", deck_filename='german_english_deck.apkg'):
     """
     Function to create an Anki card with a German phrase, English translation, audio file, and an image.
     """
@@ -10,7 +10,7 @@ def create_anki_card(german_phrase, english_translation, audio_file, image_file,
     if not os.path.exists(audio_file) or not os.path.exists(image_file):
         raise FileNotFoundError("Audio file or image file not found!")
 
-    # Create an Anki model - CORRECTED FIELDS DEFINITION
+    # Create an Anki model
     my_model = genanki.Model(
         1607392319,  # Unique model ID
         'German-English Model',
@@ -23,8 +23,8 @@ def create_anki_card(german_phrase, english_translation, audio_file, image_file,
         templates=[
             {
                 'name': 'Card 1',
-                'qfmt': '{{German}}',
-                'afmt': '{{FrontSide}}<hr id="answer">{{English}}<br><audio src="{{Audio}}"></audio><br><img src="{{Image}}"/>',
+                'qfmt': '{{German}}',  # The question (German phrase)
+                'afmt': '{{FrontSide}}<hr id="answer">{{English}}<br>[sound:{{Audio}}]<br><img src="{{Image}}"/>',  # The answer (English translation, audio, and image)
             },
         ]
     )
@@ -35,19 +35,27 @@ def create_anki_card(german_phrase, english_translation, audio_file, image_file,
         deck_name
     )
 
-    # Create a note with the German phrase, English translation, and files
+    # Create a note with the German phrase, English translation, and media files (using the correct paths)
     my_note = genanki.Note(
         model=my_model,
-        fields=[german_phrase, english_translation, audio_file, image_file]
+        fields=[
+            german_phrase,
+            english_translation,
+            os.path.basename(audio_file),  # Use just the filename, not the full path
+            os.path.basename(image_file)   # Use just the filename, not the full path
+        ]
     )
 
     # Add the note to the deck
     my_deck.add_note(my_note)
 
-    # Save the deck to a file
-    my_deck.write_to_file(deck_filename)
+    # Create a package to support media
+    my_package = genanki.Package(my_deck)
+
+    # Include the media files in the package
+    my_package.media_files = [audio_file, image_file]
+
+    # Write the package to a file
+    my_package.write_to_file("anki_cards\\"+deck_filename)
 
     print(f"Anki deck generated successfully! Saved as '{deck_filename}'.")
-
-
-create_anki_card("Hallo alles", "hello goon", "ankioutput.mp3", "screenshot.png")
