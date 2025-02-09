@@ -19,17 +19,24 @@ def generate_random_filename(file_extensions=None, length=10):
     file_extension = random.choice(file_extensions)
     return file_name + file_extension
 
+def parse_time(time_str):
+    try:
+        minutes, seconds = map(int, time_str.split(':'))
+        return minutes * 60 + seconds
+    except ValueError:
+        raise ValueError("Invalid time format. Use MM:SS")
+
 def process_video():
     youtube_url = youtube_url_entry.get()
-    start_time = start_time_entry.get()
-    end_time = end_time_entry.get()
+    start_time_str = start_time_entry.get()
+    end_time_str = end_time_entry.get()
 
     try:
-        start_time = int(start_time)
-        end_time = int(end_time)
+        start_time = parse_time(start_time_str)
+        end_time = parse_time(end_time_str)
+
         if start_time < 0 or end_time < 0 or start_time >= end_time:
             raise ValueError("Invalid start or end times.")
-
 
         MP3_OUTPUT_FILENAME = "C:\\Users\\kirab\\AppData\\Roaming\\Anki2\\User 1\\collection.media\\" + generate_random_filename(['.mp3'])
         SCREENSHOT_OUTPUT_FILENAME = "C:\\Users\\kirab\\AppData\\Roaming\\Anki2\\User 1\\collection.media\\" + generate_random_filename(['.png'])
@@ -60,12 +67,12 @@ youtube_url_label.grid(row=0, column=0, padx=5, pady=5, sticky="w")
 youtube_url_entry = ttk.Entry(root, width=50)
 youtube_url_entry.grid(row=0, column=1, padx=5, pady=5)
 
-start_time_label = ttk.Label(root, text="Start Time (seconds):")
+start_time_label = ttk.Label(root, text="Start Time (MM:SS):")
 start_time_label.grid(row=1, column=0, padx=5, pady=5, sticky="w")
 start_time_entry = ttk.Entry(root, width=10)
 start_time_entry.grid(row=1, column=1, padx=5, pady=5, sticky="w")
 
-end_time_label = ttk.Label(root, text="End Time (seconds):")
+end_time_label = ttk.Label(root, text="End Time (MM:SS):")
 end_time_label.grid(row=2, column=0, padx=5, pady=5, sticky="w")
 end_time_entry = ttk.Entry(root, width=10)
 end_time_entry.grid(row=2, column=1, padx=5, pady=5, sticky="w")
